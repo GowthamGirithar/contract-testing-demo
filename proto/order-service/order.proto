@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package orderservice;
 
-option go_package = "github.com/GowthamGirithar/contract-testing-demo/proto/order-service";
+option go_package = ".";
 
 message CreateOrderRequest {
   string order_number = 1;

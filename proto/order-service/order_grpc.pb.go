@@ -4,7 +4,7 @@
 // - protoc             v4.25.3
 // source: order.proto
 
-package order_service
+package __
 
 import (
 	context "context"
@@ -36,7 +36,7 @@ func NewOrderClient(cc grpc.ClientConnInterface) OrderClient {
 
 func (c *orderClient) CreateOrder(ctx context.Context, in *CreateOrderRequest, opts ...grpc.CallOption) (*CreateOrderResponse, error) {
 	out := new(CreateOrderResponse)
-	err := c.cc.Invoke(ctx, "/orderserviceprovider.Order/CreateOrder", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/orderservice.Order/CreateOrder", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -45,7 +45,7 @@ func (c *orderClient) CreateOrder(ctx context.Context, in *CreateOrderRequest, o
 
 func (c *orderClient) GetOrder(ctx context.Context, in *GetOrderRequest, opts ...grpc.CallOption) (*GetOrderResponse, error) {
 	out := new(GetOrderResponse)
-	err := c.cc.Invoke(ctx, "/orderserviceprovider.Order/GetOrder", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/orderservice.Order/GetOrder", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -94,7 +94,7 @@ func _Order_CreateOrder_Handler(srv interface{}, ctx context.Context, dec func(i
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/orderserviceprovider.Order/CreateOrder",
+		FullMethod: "/orderservice.Order/CreateOrder",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(OrderServer).CreateOrder(ctx, req.(*CreateOrderRequest))
@@ -112,7 +112,7 @@ func _Order_GetOrder_Handler(srv interface{}, ctx context.Context, dec func(inte
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/orderserviceprovider.Order/GetOrder",
+		FullMethod: "/orderservice.Order/GetOrder",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(OrderServer).GetOrder(ctx, req.(*GetOrderRequest))
@@ -124,7 +124,7 @@ func _Order_GetOrder_Handler(srv interface{}, ctx context.Context, dec func(inte
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var Order_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "orderserviceprovider.Order",
+	ServiceName: "orderservice.Order",
 	HandlerType: (*OrderServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{

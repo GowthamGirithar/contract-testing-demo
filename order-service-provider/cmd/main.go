@@ -7,8 +7,9 @@ import (
 	"google.golang.org/grpc"
 
 	order "github.com/GowthamGirithar/contract-testing-demo/order-service-provider/internal/adapter/grpc"
-
 	pb "github.com/GowthamGirithar/contract-testing-demo/proto/order-service"
+
+	_ "google.golang.org/grpc/encoding/gzip"
 )
 
 func main() {

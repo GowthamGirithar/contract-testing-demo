@@ -74,6 +74,60 @@
       ],
       "transport": "grpc",
       "type": "Synchronous/Messages"
+    },
+    {
+      "description": "create order request - invalid",
+      "interactionMarkup": {
+        "markup": "```protobuf\nmessage CreateOrderResponse {\n}\n```\n",
+        "markupType": "COMMON_MARK"
+      },
+      "pending": false,
+      "pluginConfiguration": {
+        "protobuf": {
+          "descriptorKey": "10f9cfe31e7461f5b13f53130ec608c1",
+          "service": "Order/CreateOrder"
+        }
+      },
+      "request": {
+        "contents": {
+          "content": "CgEz",
+          "contentType": "application/protobuf;message=CreateOrderRequest",
+          "contentTypeHint": "BINARY",
+          "encoded": "base64"
+        },
+        "matchingRules": {
+          "body": {
+            "$.order_number": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "number"
+                }
+              ]
+            }
+          }
+        },
+        "metadata": {
+          "contentType": "application/protobuf;message=CreateOrderRequest"
+        }
+      },
+      "response": [
+        {
+          "contents": {
+            "content": "",
+            "contentType": "application/protobuf;message=CreateOrderResponse",
+            "contentTypeHint": "BINARY",
+            "encoded": "base64"
+          },
+          "metadata": {
+            "contentType": "application/protobuf;message=CreateOrderResponse",
+            "grpc-message": "Invalid email format",
+            "grpc-status": "INTERNAL"
+          }
+        }
+      ],
+      "transport": "grpc",
+      "type": "Synchronous/Messages"
     }
   ],
   "metadata": {
@@ -91,10 +145,6 @@
           "10f9cfe31e7461f5b13f53130ec608c1": {
             "protoDescriptors": "CoMECgtvcmRlci5wcm90bxIMb3JkZXJzZXJ2aWNlIl4KEkNyZWF0ZU9yZGVyUmVxdWVzdBIhCgxvcmRlcl9udW1iZXIYASABKAlSC29yZGVyTnVtYmVyEiUKDmN1c3RvbWVyX2VtYWlsGAIgASgJUg1jdXN0b21lckVtYWlsIjgKE0NyZWF0ZU9yZGVyUmVzcG9uc2USIQoMb3JkZXJfbnVtYmVyGAEgASgJUgtvcmRlck51bWJlciI0Cg9HZXRPcmRlclJlcXVlc3QSIQoMb3JkZXJfbnVtYmVyGAEgASgJUgtvcmRlck51bWJlciJcChBHZXRPcmRlclJlc3BvbnNlEiEKDG9yZGVyX251bWJlchgBIAEoCVILb3JkZXJOdW1iZXISJQoOY3VzdG9tZXJfZW1haWwYAiABKAlSDWN1c3RvbWVyRW1haWwyqgEKBU9yZGVyElQKC0NyZWF0ZU9yZGVyEiAub3JkZXJzZXJ2aWNlLkNyZWF0ZU9yZGVyUmVxdWVzdBohLm9yZGVyc2VydmljZS5DcmVhdGVPcmRlclJlc3BvbnNlIgASSwoIR2V0T3JkZXISHS5vcmRlcnNlcnZpY2UuR2V0T3JkZXJSZXF1ZXN0Gh4ub3JkZXJzZXJ2aWNlLkdldE9yZGVyUmVzcG9uc2UiAEIDWgEuYgZwcm90bzM=",
             "protoFile": "syntax = \"proto3\";\n\npackage orderservice;\n\noption go_package = \".\";\n\nmessage CreateOrderRequest {\n  string order_number = 1;\n  string customer_email = 2;\n}\n\nmessage CreateOrderResponse{\n  string order_number = 1;\n}\n\nmessage GetOrderRequest{\n  string order_number =1;\n}\n\nmessage GetOrderResponse{\n  string order_number =1;\n  string customer_email = 2;\n}\n\nservice Order{\n  rpc CreateOrder(CreateOrderRequest) returns (CreateOrderResponse){}\n  rpc GetOrder(GetOrderRequest) returns (GetOrderResponse){}\n}\n"
-          },
-          "b8bec1b78e57a4eb66211342d22137a7": {
-            "protoDescriptors": "CvUDCgtvcmRlci5wcm90bxIFb3JkZXIiXgoSQ3JlYXRlT3JkZXJSZXF1ZXN0EiEKDG9yZGVyX251bWJlchgBIAEoCVILb3JkZXJOdW1iZXISJQoOY3VzdG9tZXJfZW1haWwYAiABKAlSDWN1c3RvbWVyRW1haWwiOAoTQ3JlYXRlT3JkZXJSZXNwb25zZRIhCgxvcmRlcl9udW1iZXIYASABKAlSC29yZGVyTnVtYmVyIjQKD0dldE9yZGVyUmVxdWVzdBIhCgxvcmRlcl9udW1iZXIYASABKAlSC29yZGVyTnVtYmVyIlwKEEdldE9yZGVyUmVzcG9uc2USIQoMb3JkZXJfbnVtYmVyGAEgASgJUgtvcmRlck51bWJlchIlCg5jdXN0b21lcl9lbWFpbBgCIAEoCVINY3VzdG9tZXJFbWFpbDKOAQoFT3JkZXISRgoLQ3JlYXRlT3JkZXISGS5vcmRlci5DcmVhdGVPcmRlclJlcXVlc3QaGi5vcmRlci5DcmVhdGVPcmRlclJlc3BvbnNlIgASPQoIR2V0T3JkZXISFi5vcmRlci5HZXRPcmRlclJlcXVlc3QaFy5vcmRlci5HZXRPcmRlclJlc3BvbnNlIgBCGFoWY29udHJhY3QtdGVzdGluZy9vcmRlcmIGcHJvdG8z",
-            "protoFile": "syntax = \"proto3\";\n\npackage order;\noption go_package = \"contract-testing/order\";\n\nservice Order{\n  rpc CreateOrder (CreateOrderRequest)returns (CreateOrderResponse) {}\n  rpc GetOrder (GetOrderRequest)returns (GetOrderResponse) {}\n}\n\nmessage CreateOrderRequest {\n  string order_number =1;\n  string customer_email = 2;\n}\n\nmessage CreateOrderResponse{\n  string order_number = 1;\n}\n\nmessage GetOrderRequest{\n  string order_number =1;\n}\n\nmessage GetOrderResponse{\n  string order_number =1;\n  string customer_email = 2;\n}"
           }
         },
         "name": "protobuf",

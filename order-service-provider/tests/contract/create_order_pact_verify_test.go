@@ -5,6 +5,7 @@ import (
 	"log"
 	"net"
 	"os"
+	"path/filepath"
 	"testing"
 
 	pb "github.com/GowthamGirithar/contract-testing-demo/proto/order-service"
@@ -19,9 +20,10 @@ import (
 func TestPactProvider(t *testing.T) {
 	go startProvider()
 	l.SetLogLevel("INFO")
-
 	verifier := provider.NewVerifier()
-	// Verify the Provider - From file
+
+	pactPath, _ := filepath.Abs("../../../pacts/orderserviceprovider/createorder/create-order-consumer-create-order-provider.json")
+
 	err := verifier.VerifyProvider(t, provider.VerifyRequest{
 		Provider:        "create-order-provider",
 		ProviderBaseURL: fmt.Sprintf("http://localhost:%d", 8222),
@@ -33,17 +35,15 @@ func TestPactProvider(t *testing.T) {
 		},
 		ProviderBranch:     os.Getenv("VERSION_BRANCH"),
 		FailIfNoPactsFound: false,
-		PactFiles:          []string{""}, // TODO: MENTION PACT PATH
+		PactFiles:          []string{pactPath},
 		ProviderVersion:    os.Getenv("VERSION_COMMIT"),
 	})
 
 	if err != nil {
-		fmt.Println(err)
+		fmt.Println("the error is ", err)
 	}
 }
 
-// Starts the provider API with hooks for provider states.
-// This essentially mirrors the main.go file, with extra routes added.
 func startProvider() {
 	lis, err := net.Listen("tcp", fmt.Sprintf("localhost:%d", 8222))
 	if err != nil {

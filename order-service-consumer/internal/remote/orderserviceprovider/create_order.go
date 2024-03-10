@@ -3,6 +3,7 @@ package orderserviceprovider
 import (
 	"context"
 	"fmt"
+	"github.com/GowthamGirithar/contract-testing-demo/order-service-consumer/internal/domain"
 	order "github.com/GowthamGirithar/contract-testing-demo/proto/order-service"
 	grpc_retry "github.com/grpc-ecosystem/go-grpc-middleware/retry"
 	"google.golang.org/grpc"
@@ -28,7 +29,7 @@ func NewClient(address string, port string, userAgent string, timeout time.Durat
 	}
 }
 
-func (c client) CreateOrder(ctx context.Context, req interface{}) error {
+func (c client) CreateOrder(ctx context.Context, o domain.Order) error {
 	dialCtx, dialCancel := context.WithTimeout(ctx, 1*time.Second)
 	defer dialCancel()
 	conn, err := grpc.DialContext(dialCtx, fmt.Sprintf("%s:%s", c.address, c.port),
@@ -47,24 +48,26 @@ func (c client) CreateOrder(ctx context.Context, req interface{}) error {
 	}
 	defer conn.Close()
 
-	if req == nil {
-		req = &order.CreateOrderRequest{
-			OrderNumber:   "12",
-			CustomerEmail: "test@gmail.com",
-		}
-	}
+	req := mapCreateOrderReqFrom(o)
 
 	ctx = getContextWithMetadata(ctx, c.userAgent)
 	contextCancel, cancel := context.WithTimeout(ctx, c.timeout)
 	defer cancel()
 
-	res, err := order.NewOrderClient(conn).CreateOrder(contextCancel, req.(*order.CreateOrderRequest))
+	res, err := order.NewOrderClient(conn).CreateOrder(contextCancel, req)
 	if err != nil {
 		return err
 	}
 	fmt.Println(res)
 
 	return nil
+}
+
+func mapCreateOrderReqFrom(o domain.Order) *order.CreateOrderRequest {
+	return &order.CreateOrderRequest{
+		OrderNumber:   o.OrderID,
+		CustomerEmail: o.CustomerEmail,
+	}
 }
 
 func getContextWithMetadata(ctx context.Context, agent string) context.Context {

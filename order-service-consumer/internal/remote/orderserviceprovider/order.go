@@ -9,6 +9,7 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/credentials/insecure"
+	"google.golang.org/grpc/encoding/gzip"
 	"google.golang.org/grpc/metadata"
 	"time"
 )
@@ -69,7 +70,7 @@ func (c client) GetOrder(ctx context.Context, orderCode string) (*order.GetOrder
 	conn, err := grpc.DialContext(dialCtx, fmt.Sprintf("%s:%s", c.address, c.port),
 		grpc.WithUserAgent(c.userAgent),
 		grpc.WithTransportCredentials(insecure.NewCredentials()),
-		//grpc.WithDefaultCallOptions(grpc.UseCompressor(gzip.Name)), - check for pact test
+		grpc.WithDefaultCallOptions(grpc.UseCompressor(gzip.Name)),
 		grpc.WithUnaryInterceptor(
 			grpc_retry.UnaryClientInterceptor(
 				grpc_retry.WithMax(3),

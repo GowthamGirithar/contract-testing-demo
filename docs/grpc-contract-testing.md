@@ -22,7 +22,9 @@ But if an application uses a field mask to request only required fields in the r
  - If provider enforce security to use HTTPS , it should be communicated to the consumers and test it instead via contract testing
 
 5. Compression Changes:
- - TODO: Try different compression is used / how server will know consumer compressed algo
+ - Contract testing is helpful to detect whether client and server enabled the same compression.
+ - If client sends the compression technique which is not supported by server, then server return UNIMPLEMENTED
+ - If server sends the compression technique which is not supported by client, then error code is INTERNAL
  
 6. Performance Optimization Changes:
 - TODO
@@ -30,5 +32,4 @@ But if an application uses a field mask to request only required fields in the r
 # Optional and Required fields 
 
 'required' option is deprecated in the latest version of protobuf and contract testing might help providers to validate the required fields with data format.
-
-# one of cases 
+same applicable to "one of" also

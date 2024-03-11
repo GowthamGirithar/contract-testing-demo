@@ -35,7 +35,7 @@ func (c client) CreateOrder(ctx context.Context, o domain.Order) error {
 	conn, err := grpc.DialContext(dialCtx, fmt.Sprintf("%s:%s", c.address, c.port),
 		grpc.WithUserAgent(c.userAgent),
 		grpc.WithTransportCredentials(insecure.NewCredentials()),
-		//grpc.WithDefaultCallOptions(grpc.UseCompressor(gzip.Name)), - check for pact test
+		//grpc.WithDefaultCallOptions(grpc.UseCompressor(gzip.Name)),
 		grpc.WithUnaryInterceptor(
 			grpc_retry.UnaryClientInterceptor(
 				grpc_retry.WithMax(3),
@@ -61,6 +61,35 @@ func (c client) CreateOrder(ctx context.Context, o domain.Order) error {
 	fmt.Println(res)
 
 	return nil
+}
+
+func (c client) GetOrder(ctx context.Context, orderCode string) (*order.GetOrderResponse, error) {
+	dialCtx, dialCancel := context.WithTimeout(ctx, 1*time.Second)
+	defer dialCancel()
+	conn, err := grpc.DialContext(dialCtx, fmt.Sprintf("%s:%s", c.address, c.port),
+		grpc.WithUserAgent(c.userAgent),
+		grpc.WithTransportCredentials(insecure.NewCredentials()),
+		//grpc.WithDefaultCallOptions(grpc.UseCompressor(gzip.Name)), - check for pact test
+		grpc.WithUnaryInterceptor(
+			grpc_retry.UnaryClientInterceptor(
+				grpc_retry.WithMax(3),
+				grpc_retry.WithBackoff(grpc_retry.BackoffExponential(100*time.Millisecond)),
+				grpc_retry.WithCodes(codes.Unavailable, codes.DeadlineExceeded),
+			)),
+	)
+	if err != nil {
+		return nil, err
+	}
+	defer conn.Close()
+	ctx = getContextWithMetadata(ctx, c.userAgent)
+	contextCancel, cancel := context.WithTimeout(ctx, c.timeout)
+	defer cancel()
+
+	res, err := order.NewOrderClient(conn).GetOrder(contextCancel, &order.GetOrderRequest{OrderNumber: orderCode})
+	if err != nil {
+		return nil, err
+	}
+	return res, nil
 }
 
 func mapCreateOrderReqFrom(o domain.Order) *order.CreateOrderRequest {

@@ -5,7 +5,7 @@ import (
 	"google.golang.org/grpc"
 )
 
-func logRequest(ctx context.Context,
+func LogRequest(ctx context.Context,
 	req interface{},
 	info *grpc.UnaryServerInfo,
 	handler grpc.UnaryHandler) (interface{}, error) {

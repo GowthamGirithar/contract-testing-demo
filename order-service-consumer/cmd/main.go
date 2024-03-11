@@ -14,5 +14,12 @@ func main() {
 	err := s.CreateOrder(context.Background(), domain.Order{
 		CustomerEmail: "test@gmail.com",
 	})
-	fmt.Println(err)
+	if err != nil {
+		fmt.Println(err)
+	}
+	res, err := s.GetOrder(context.Background(), "12")
+	if err != nil {
+		fmt.Println(err)
+	}
+	fmt.Println(res.GetCustomerEmail())
 }

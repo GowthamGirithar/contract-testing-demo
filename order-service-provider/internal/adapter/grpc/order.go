@@ -36,5 +36,8 @@ func validate(req *order.CreateOrderRequest) error {
 }
 
 func (s server) GetOrder(ctx context.Context, req *order.GetOrderRequest) (*order.GetOrderResponse, error) {
-	return nil, nil
+	return &order.GetOrderResponse{
+		OrderNumber:   req.GetOrderNumber(),
+		CustomerEmail: "test@gmail.com",
+	}, nil
 }

@@ -4,6 +4,7 @@ go 1.21.7
 
 require (
 	github.com/GowthamGirithar/contract-testing-demo v0.0.2
+	github.com/grpc-ecosystem/go-grpc-middleware v1.4.0
 	github.com/pact-foundation/pact-go/v2 v2.0.4
 	github.com/pkg/errors v0.9.1
 	google.golang.org/grpc v1.62.1

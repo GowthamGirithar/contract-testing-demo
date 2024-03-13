@@ -12,6 +12,7 @@ import (
 func main() {
 	s := orderserviceprovider.NewClient("127.0.0.1", "8082", "order-service-consumer", time.Duration(1*time.Second))
 	err := s.CreateOrder(context.Background(), domain.Order{
+		OrderID:       "12",
 		CustomerEmail: "test@gmail.com",
 	})
 	if err != nil {

@@ -55,11 +55,10 @@ func (c client) CreateOrder(ctx context.Context, o domain.Order) error {
 	contextCancel, cancel := context.WithTimeout(ctx, c.timeout)
 	defer cancel()
 
-	res, err := order.NewOrderClient(conn).CreateOrder(contextCancel, req)
+	_, err = order.NewOrderClient(conn).CreateOrder(contextCancel, req)
 	if err != nil {
 		return err
 	}
-	fmt.Println(res)
 
 	return nil
 }

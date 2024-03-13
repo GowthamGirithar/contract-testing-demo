@@ -1,7 +1,6 @@
 
 
-# Loss of visibility into real-world client usage 
-
+# Loss of visibility into real-world client usage
 With contract testing, the provider knows what all the fields are that the consumer requires, and this information is very helpful if we want to deprecate any field.
 But if an application uses a field mask to request only required fields in the requests to return only those fields, we won't benefit from contract testing from this point of view.
 

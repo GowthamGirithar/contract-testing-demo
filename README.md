@@ -1,4 +1,4 @@
-_Contract testing for Golang GRPC with Pact_
+***<ins>Contract testing for Golang GRPC with Pact</ins>***
 
 **Integration Testing:**
 
@@ -22,7 +22,7 @@ Contract testing is to verify the contracts between services by mocking the down
 
 ****![](https://lh7-us.googleusercontent.com/GXQ8255uXXvGaTudzc9ebMkxK1St_txlsYEU2c6NAayXg4AyM0CbIs_MrO2L0rQ4h4r2aLEM6exChdHymNc07rsEzuGe9wDN8V6u9N03HsiuaV7b80O-Rmb_g_vD6D7gL7vtp6GOqToTVY5HQvU4lH8)****
 
-******(reference : https\://docs.pact.io)**
+reference : https\://docs.pact.io
 
 It starts with defining the contract, on which all the parties agree. Once the contract has been agreed upon, the consumer writes the unit tests with a pact, which results in generating the pact file (json) as a result of the run.
 

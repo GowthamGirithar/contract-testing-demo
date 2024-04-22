@@ -1,19 +1,4 @@
 ***<ins>Contract testing for Golang GRPC with Pact</ins>***
-
-**Integration Testing:**
-
-In my experience, everyone does integration testing differently, considering the main factor that they spend less time running the tests. A few examples are below.
-
-- Developers always try to test in a dev environment to know whether their changes are working fine or not, and as a result, untested changes are in dev, and other teams cannot run integration tests with these changes. So, they end up waiting for the stable version in the development environment.
-
-- Having separate environments for integration testing also has some drawbacks, such as the fact that configurations are not always up-to-date and the cost of maintaining the infrastructure for mid-sized companies.
-
-- Few I have seen in the past used to trigger the flow inside the service by running the test database as a Docker container. The drawback of this approach is that there is no actual interaction between the microservices, and some of the functions are never called, we are not sure whether the contract agreed is still the same.
-
-- If we have more test cases, it ends up taking a lot of time to complete the test cases. And so no possibility of early feedback. We should always have small, medium and large tests where small tests are unit tests which should be more to cover all the cases whereas integration tests fall into medium test which should be minimum compared to unit, whereas large tests are e2e tests.
-
-Considering the requirement to run the integration tests and e2e, contract tests came into play, which helps in reducing the time taken for running the tests with early feedback and solves the problem that we had with that contract between services have not been verified.
-
 **Contract testing :**
 
 Contract testing is to verify the contracts between services by mocking the downstream services. It uses two concepts, such as consumer and provider. The consumer is the one who calls the API and waits for the response, whereas the provider is the one who responds to the requests. There are different tools available on the market for contract testing, and some are pact and hypertest.

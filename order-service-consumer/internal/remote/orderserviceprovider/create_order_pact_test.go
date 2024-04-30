@@ -57,7 +57,7 @@ func TestCreate(t *testing.T) {
 		assert.NoError(t, err)
 	})
 
-	t.Run("invalid request", func(t *testing.T) {
+	t.Run("invalid request - general case", func(t *testing.T) {
 
 		mockProvider, err := message.NewSynchronousPact(message.Config{
 			Consumer: "create-order-consumer",

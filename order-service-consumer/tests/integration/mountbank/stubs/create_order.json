@@ -1,0 +1,18 @@
+{
+  "predicates": [
+    {
+      "equals": {
+        "path": "/orderservice.Order/CreateOrder"
+      }
+    }
+  ],
+  "responses": [
+    {
+      "is": {
+        "body": {
+          "order_code": "mountbankmock"
+        }
+      }
+    }
+  ]
+}

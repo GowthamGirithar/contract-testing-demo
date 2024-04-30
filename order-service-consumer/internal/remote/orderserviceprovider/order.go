@@ -11,18 +11,19 @@ import (
 	"google.golang.org/grpc/credentials/insecure"
 	"google.golang.org/grpc/encoding/gzip"
 	"google.golang.org/grpc/metadata"
+	"google.golang.org/grpc/status"
 	"time"
 )
 
-type client struct {
+type Client struct {
 	address   string
 	port      string
 	userAgent string
 	timeout   time.Duration
 }
 
-func NewClient(address string, port string, userAgent string, timeout time.Duration) client {
-	return client{
+func NewClient(address string, port string, userAgent string, timeout time.Duration) Client {
+	return Client{
 		address:   address,
 		port:      port,
 		userAgent: userAgent,
@@ -30,9 +31,11 @@ func NewClient(address string, port string, userAgent string, timeout time.Durat
 	}
 }
 
-func (c client) CreateOrder(ctx context.Context, o domain.Order) error {
-	dialCtx, dialCancel := context.WithTimeout(ctx, 1*time.Second)
+func (c Client) CreateOrder(ctx context.Context, o domain.Order) error {
+	dialCtx, dialCancel := context.WithTimeout(ctx, 5*time.Second)
 	defer dialCancel()
+	fmt.Println(c.address)
+	fmt.Println("the port is ", c.port)
 	conn, err := grpc.DialContext(dialCtx, fmt.Sprintf("%s:%s", c.address, c.port),
 		grpc.WithUserAgent(c.userAgent),
 		grpc.WithTransportCredentials(insecure.NewCredentials()),
@@ -54,16 +57,22 @@ func (c client) CreateOrder(ctx context.Context, o domain.Order) error {
 	ctx = getContextWithMetadata(ctx, c.userAgent)
 	contextCancel, cancel := context.WithTimeout(ctx, c.timeout)
 	defer cancel()
-
-	_, err = order.NewOrderClient(conn).CreateOrder(contextCancel, req)
+	res, err := order.NewOrderClient(conn).CreateOrder(contextCancel, req)
 	if err != nil {
+		fmt.Println(err)
+		fmt.Println(status.Code(err))
+		if status.Code(err) == codes.DeadlineExceeded {
+			fmt.Println("hello yes deadline exceeded")
+		}
 		return err
 	}
+
+	fmt.Println("The order number is ", res.GetOrderNumber())
 
 	return nil
 }
 
-func (c client) GetOrder(ctx context.Context, orderCode string) (*order.GetOrderResponse, error) {
+func (c Client) GetOrder(ctx context.Context, orderCode string) (*order.GetOrderResponse, error) {
 	dialCtx, dialCancel := context.WithTimeout(ctx, 1*time.Second)
 	defer dialCancel()
 	conn, err := grpc.DialContext(dialCtx, fmt.Sprintf("%s:%s", c.address, c.port),

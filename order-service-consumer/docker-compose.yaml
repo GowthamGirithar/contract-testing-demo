@@ -1,0 +1,49 @@
+version: '3.8'
+
+networks:
+  my_network:
+
+services:
+  order-service-consumer:
+      container_name: osc
+      ports:
+        - 8080:8080
+      build:
+        context: .
+        dockerfile: Dockerfile
+      networks:
+        - my_network
+
+# gripmock https://github.com/tokopedia/gripmock?tab=readme-ov-file
+  order-service-provider-mock:
+     container_name: mock-osa-provider
+     image: tkpd/gripmock:v1.13
+     ports:
+        - 4770:4770
+        - 4771:4771
+     volumes:
+        - ./tests/integration/gripmock/stubs:/stubs
+        - ../proto/order-service:/proto
+     command:
+        - "--stub=/stubs"
+        - "/proto/order.proto"
+     networks:
+        - my_network
+
+
+  order-service-provider-mountbank-mock:
+    container_name: mock-osa-mountbank-provider
+    build:
+      context: .
+      dockerfile: ./docker/mountbank/Dockerfile
+    ports:
+      - 2525:2525  # admin UI
+      - 8090:8090
+      - 9090:9090 # gRPC
+    volumes:
+      - ./tests/integration/mountbank:/mountebank
+      - ../proto/order-service:/mountebank/proto
+    networks:
+      - my_network
+
+

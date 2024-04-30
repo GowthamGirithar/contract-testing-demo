@@ -1,0 +1,32 @@
+{
+  "imposters": [
+  {
+       "port": 8090,
+       "protocol": "http",
+        "recordRequests": true,
+        "defaultResponse": {
+         "statusCode": 404,
+          "mode": "binary",
+          "headers": {},
+                  "body": {
+                      "Message": "mountebank can not find matched stub"
+                  }
+          },
+          "stubs": []
+  }
+  {
+      "port": 9090,
+      "protocol": "grpc",
+      "recordRequests": true,
+      "loglevel": "debug",
+      "services": {
+         "orderservice.Order": {
+               "file": "/mountebank/proto/order.proto"
+          }
+      },
+      "stubs": []
+  }
+  ]
+}
+
+

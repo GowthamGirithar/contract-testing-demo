@@ -1,0 +1,6 @@
+{
+  "service": "Order",
+  "method": "CreateOrder",
+  "input": { "matches": { "order_number": ".*" } },
+  "output": { "data": { "order_number": "mock12345" } }
+}

@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: consumer-replicaset
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: order-service-consumer
+  template:
+    metadata:
+      labels:
+        app: order-service-consumer
+    spec:
+      containers:
+        - name: service
+          image: gowgi/osc:1.0.3
+          ports:
+            - containerPort: 8080
+        - name: tcpdump
+          image: nicolaka/netshoot
+          securityContext:
+            capabilities:
+              add:
+                - NET_ADMIN   # Required for running tcpdump
+          command: [ "sleep", "infinity" ]   # Sleep indefinitely to keep the sidecar container running

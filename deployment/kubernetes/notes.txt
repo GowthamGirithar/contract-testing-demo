@@ -1,0 +1,11 @@
+Local use to test out communication between consumer and provider
+
+refer tcpdump image repo
+
+To copy the dump file from container to local
+kubectl cp default/consumer-replicaset-2dcwk:data.pcap ./data.pcap -c tcpdump
+
+
+
+
+
